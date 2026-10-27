@@ -1,0 +1,14 @@
+[Unit]
+Description=Android phone HTTP proxy forward for the Linux VM
+After=network-online.target
+
+[Service]
+Type=simple
+Environment=PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+ExecStart=/usr/bin/python3 %h/.local/bin/phone-vm-proxy run
+Restart=on-failure
+RestartSec=5
+UMask=0077
+
+[Install]
+WantedBy=default.target

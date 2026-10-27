@@ -4,7 +4,7 @@
 
 Let CLI processes inside Android's built-in Linux Terminal explicitly use an existing HTTP proxy on the phone. Same-phone wireless ADB forwards the phone's loopback proxy into the VM; proxy environment variables direct selected processes through it. No Android root or additional proxy core inside the VM is required.
 
-This is an independent, optional companion to [Android Local Agent](https://github.com/RAKiQWQ/android-local-agent) and can also be used on its own. It maintains outbound proxy forwarding only; it does not manage T3 access, login callbacks, or SSH.
+This is an independent, optional companion to [T3 Code on Android as an Agent](https://github.com/RAKiQWQ/t3-code-on-android-as-an-agent) and can also be used on its own. It maintains outbound proxy forwarding only; it does not manage T3 access, login callbacks, or SSH.
 
 ## Why it exists
 
@@ -96,7 +96,7 @@ journalctl --user -u android-vm-proxy.service -n 30
 
 VM port `18080` should listen only on `127.0.0.1` / `::1`. Do not add it to Terminal's Port control. If the port is occupied, stop the service and change it with `phone-vm-proxy configure 54321 --vm-port 18081`, then reload the shell and T3 environments. Do not remove all ADB mappings. If a changed phone gateway leaves an old mapping, inspect its device and ports with `forward --list`, then remove that individual mapping using the official ADB commands.
 
-If the mapping exists but `curl` fails, check that the phone proxy is running, its port supports HTTP CONNECT, and its own outbound connection works. A browser callback reaching a CLI and the VM completing an outbound request are separate stages. This project handles outbound proxy access; phone callback forwarding belongs to the original Agent project.
+If the mapping exists but `curl` fails, check that the phone proxy is running, its port supports HTTP CONNECT, and its own outbound connection works. A browser callback reaching a CLI and the VM completing an outbound request are separate stages. This project handles outbound proxy access; phone callback forwarding belongs to the T3 phone deployment project.
 
 The early deployment's `phone-link.service` managed proxy forwarding together with T3 and other forwards. This installer stops if it finds that controller; migrate and archive it manually first so two controllers do not compete for the proxy port. The current minimal `android-local-agent-link.service` manages reverse forwards only and can be used alongside this project.
 

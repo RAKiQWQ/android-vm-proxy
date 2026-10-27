@@ -4,7 +4,7 @@
 
 让 Android 自带 Linux Terminal 中的 CLI 显式使用手机已有的 HTTP 代理。通过同机无线 ADB，将手机的回环代理端口转发到 VM，再为需要联网的进程设置代理环境变量。无需 Android Root，也无需在 VM 中另装代理内核。
 
-这是 [Android Local Agent](https://github.com/RAKiQWQ/android-local-agent) 的独立可选配套项目，也可以单独使用。它只维护出站代理转发，不管理 T3 入口、登录回调或 SSH。
+这是 [T3 Code on Android as an Agent](https://github.com/RAKiQWQ/t3-code-on-android-as-an-agent) 的独立可选配套项目，也可以单独使用。它只维护出站代理转发，不管理 T3 入口、登录回调或 SSH。
 
 ## 为什么需要它
 
@@ -96,7 +96,7 @@ journalctl --user -u android-vm-proxy.service -n 30
 
 VM 的 `18080` 应只监听在 `127.0.0.1`／`::1`。不要把它加入 Terminal 的 Port control。端口被占用时可停止服务后用 `phone-vm-proxy configure 54321 --vm-port 18081` 更换，再重新加载 Shell 和 T3 的环境；不要清空全部 ADB 映射。更换手机网关后若残留旧映射，先用 `forward --list` 核对旧设备和端口，再按 ADB 官方命令移除对应单条映射。
 
-映射正常但 `curl` 失败时，检查手机代理是否仍在运行、端口是否支持 HTTP CONNECT，以及代理自身的出站连接。浏览器登录回调能到达 CLI，与 VM 能否完成联网请求是不同环节；本项目仅处理出站代理，手机回调入口由原 Agent 项目维护。
+映射正常但 `curl` 失败时，检查手机代理是否仍在运行、端口是否支持 HTTP CONNECT，以及代理自身的出站连接。浏览器登录回调能到达 CLI，与 VM 能否完成联网请求是不同环节；本项目仅处理出站代理，手机回调入口由 T3 手机部署项目维护。
 
 早期实测使用的 `phone-link.service` 同时管理代理、T3 等转发。安装器检测到它会退出；应先手动迁移和归档，避免两个控制器争用同一代理端口。当前精简版 `android-local-agent-link.service` 只维护反向转发，可与本项目配合使用。
 
